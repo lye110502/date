@@ -87,14 +87,16 @@
   <div class="card" id="first">
     <div class="heart">💙</div>
     <h1>주말에 예은이랑 만나시겠습니까?</h1>
-    <p>거절은 싫습니다.</p>
+    <p id="message">
+거절을 눌러보세 😏
+</p>
     <button class="yes" onclick="showDate()">예 💕</button>
     <button class="no" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()" onclick="runAway()">아니요</button>
   </div>
 
   <div class="card hidden" id="second">
     <h1>뭐 먹을지 골라주세요</h1>
-    <p>공주와 먹을 음식을 신중하게 고르라!.</p>
+    <p>공주와 먹을 음식을 신중하게 고르라!</p>
 
     <button class="choice" onclick="finish('마라탕')">마라탕 🌶️</button>
 <button class="choice" onclick="finish('샤브샤브')">샤브샤브 🍲</button>
@@ -140,18 +142,27 @@
       });
     }
 
-    function runAway() {
-      const noBtn = document.getElementById("noBtn");
+   function runAway() {
+  const noBtn = document.getElementById("noBtn");
+  const message = document.getElementById("message");
 
-      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+  const messages = [
+    "다시 한번 눌러보세요 😎",
+    "거절권은 압수되었습니다 🚓"
+  ];
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  message.innerHTML =
+    messages[Math.floor(Math.random() * messages.length)];
+}
   </script>
 </body>
 </html>
