@@ -7,12 +7,13 @@
     body {
       margin: 0;
       height: 100vh;
-      background: linear-gradient(135deg, #ffd6e8, #fff1f7);
+      background: linear-gradient(135deg, #cceeff, #eef9ff);
       font-family: "Arial", sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
+      overflow: hidden;
     }
 
     .card {
@@ -25,7 +26,7 @@
     }
 
     h1 {
-      color: #ff4f93;
+      color: #3aa7d8;
       font-size: 28px;
     }
 
@@ -45,19 +46,20 @@
     }
 
     .yes {
-      background: #ff6fae;
+      background: #5bbce8;
       color: white;
     }
 
     .no {
       background: #ddd;
       color: #555;
-      position: relative;
+      position: fixed;
+      z-index: 10;
     }
 
     .choice {
-      background: #ffe1ef;
-      color: #ff3f8b;
+      background: #e2f6ff;
+      color: #2196c9;
       width: 250px;
     }
 
@@ -80,26 +82,33 @@
     }
   </style>
 </head>
+
 <body>
   <div class="card" id="first">
-    <div class="heart">💗</div>
+    <div class="heart">💙</div>
     <h1>주말에 나랑 만나시겠습니까?</h1>
     <p>거절은… 조금 곤란합니다.</p>
     <button class="yes" onclick="showDate()">예 💕</button>
-    <button class="no" id="noBtn" onmouseover="runAway()">아니요</button>
+    <button class="no" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()" onclick="runAway()">아니요</button>
   </div>
 
   <div class="card hidden" id="second">
-    <h1>데이트 코스를 골라주세요</h1>
+    <h1>뭐 먹을지 골라주세요</h1>
     <p>신중하게 선택하시오.</p>
-    <button class="choice" onclick="finish('맛집 가고 카페 가기')">맛집 + 카페 ☕</button>
-    <button class="choice" onclick="finish('영화 보고 산책하기')">영화 + 산책 🎬</button>
+
+    <button class="choice" onclick="finish('마라탕')">마라탕 🌶️</button>
+    <button class="choice" onclick="finish('고기')">고기 🥩</button>
+    <button class="choice" onclick="finish('초밥')">초밥 🍣</button>
+    <button class="choice" onclick="finish('파스타')">파스타 🍝</button>
+    <button class="choice" onclick="finish('치킨')">치킨 🍗</button>
+    <button class="choice" onclick="finish('기타')">기타 🤔</button>
   </div>
 
   <div class="card hidden" id="final">
-    <div class="heart">💖</div>
-    <h1>데이트 확정!</h1>
+    <div class="heart">💙</div>
+    <h1>선택 완료!</h1>
     <p id="result"></p>
+    <p>예은이에게 전달되었습니다 💌</p>
     <p>그럼 주말에 예쁘게 만나자아</p>
   </div>
 
@@ -110,16 +119,37 @@
     }
 
     function finish(choice) {
+      sendToGoogleForm(choice);
+
       document.getElementById("second").classList.add("hidden");
       document.getElementById("final").classList.remove("hidden");
-      document.getElementById("result").innerText = "선택한 코스: " + choice;
+      document.getElementById("result").innerText = "선택한 메뉴: " + choice;
+    }
+
+    function sendToGoogleForm(choice) {
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd-lRILS-GRZmHb8kAWwT2ueSKNYld12fobFBsHCbMIBYHktA/formResponse";
+
+      const formData = new FormData();
+      formData.append("entry.1288520054", choice);
+
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      });
     }
 
     function runAway() {
       const noBtn = document.getElementById("noBtn");
-      const x = Math.random() * 150 - 75;
-      const y = Math.random() * 150 - 75;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
     }
   </script>
 </body>
